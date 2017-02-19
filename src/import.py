@@ -26,8 +26,8 @@ with LogPersistence('speedtest.db') as persistence:
             'measure_dt':
                 datetime.strptime(DATA['date'][i] + ' ' + DATA['time'][i], "%Y-%m-%d %H:%M"),
             'ping': DATA['ping'][i],
-            'download': DATA['download'][i],
-            'upload': DATA['upload'][i],
+            'download': DATA['download'][i] * 1000000,
+            'upload': DATA['upload'][i] * 1000000,
         }
 
         print instance

@@ -21,7 +21,9 @@ It will automatically create a sqlite database if not already given.
 
 ## Plot a diagram
 
-Run `plot.py` to plot the last 10 days.
+Run `plot.py` to plot the last 60 days.
+
+![Example Plot](doc/images/example.png)
 
 ## Cronjob
 
