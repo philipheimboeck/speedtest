@@ -25,7 +25,7 @@ Run `plot.py` to plot the last 60 days.
 
 ![Example Plot](doc/images/example.png)
 
-## Import your CSV dat
+## Import CSV
 
 Run `import.py filename.csv` to import your existing data into your database.
 The CSV format to import is as follows:
