@@ -17,7 +17,7 @@ sudo apt install python-tk
 ## Measure the speed
 
 Run `python speedtest.py` to measure the speed.
-It will automatically create a sqlite database if not already given.
+It will automatically create a sqlite database if not already existing.
 
 ## Plot a diagram
 
