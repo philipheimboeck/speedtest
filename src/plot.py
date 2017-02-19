@@ -13,11 +13,9 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from persistence import LogPersistence
 
-
-
 with LogPersistence('speedtest.db') as persistence:
     # Fetch the data
-    START = datetime.now() - timedelta(10)
+    START = datetime.now() - timedelta(60)
     DATA = persistence.fetch((START, datetime.now()))
 
     # Convert values to array
@@ -27,8 +25,6 @@ with LogPersistence('speedtest.db') as persistence:
         PLOT_VALUES['ping'].append(item[1])
         PLOT_VALUES['download'].append(item[2])
         PLOT_VALUES['upload'].append(item[3])
-
-    print PLOT_VALUES
 
     FIG = plt.figure()
     #ax1 = fig.add_subplot(111)
