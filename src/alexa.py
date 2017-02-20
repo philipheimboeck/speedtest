@@ -100,7 +100,7 @@ def tweetCurrentSpeed(answer):
     else:
         statement_text = render_template('error').encode('utf8')
         reprompt_text = render_template('error_reprompt').encode('utf8')
-        return question(statement_text).reprompt(reprompt_text).simple_card(card_title, error_text)
+        return question(statement_text).reprompt(reprompt_text).simple_card(card_title, statement_text)
 
 @ask.intent('AMAZON.StopIntent')
 def stop():
