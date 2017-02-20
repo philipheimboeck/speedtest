@@ -8,6 +8,15 @@
           "type": "LIST_OF_TYPES"
         }
       ]
+    },
+    {
+      "intent": "TweetCurrentSpeed",
+      "slots": [
+        {
+          "name": "Answer",
+          "type": "LIST_OF_ANSWERS"
+        }
+      ]
     }
   ]
 }

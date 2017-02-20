@@ -6,9 +6,25 @@ welcome_reprompt: Bitte sag mir was ich testen soll. Sag dazu bitte wie schnell 
 known_type: |
     Deine {{ type }} Geschwindigkeit aktuell ist {{ currentSpeed }}.
 
+known_type_repromt: |
+    Soll ich dein {{ type }} Ergebnis auf Twitter veröffentlichen?
+
 unknown_type: Ich bin mir nicht sicher, was du testen möchtest. Bitte versuche es erneut.
 
 unknown_type_reprompt: |
-    Bitte sag mir was ich testen soll. Sag dazu bitte teste den Download fur mich.
+    Bitte sag mir was ich testen soll. Sag dazu bitte beispielsweise teste den Download fur mich.
 
 card_title: Speedtest
+
+tweet_text:  |
+    Meine aktuelle {{ type }} Geschwindigkeit ist {{ currentSpeed }}. #speedtest
+
+tweet_noResult:  |
+    Du hast kein Resultat oder es ist 0. Starte den Test erneut.
+
+exit: Alles klar.
+
+error: |
+  Ich bin mir nicht sicher, ob ich das richtig verstanden habe. Bitte versuche es erneut.
+
+error_reprompt: Bitte sag mir erneut, was du möchtest.
