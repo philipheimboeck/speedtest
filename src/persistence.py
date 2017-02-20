@@ -32,7 +32,7 @@ class LogPersistence(object):
         """
         cursor = self.conn.cursor()
         sql = 'CREATE TABLE IF NOT EXISTS speedlogs ' + \
-            '(id INTEGER, measure_dt TIMESTAMP, ping REAL, download REAL, upload REAL)'
+            '(id INTEGER primary key, measure_dt TIMESTAMP, ping REAL, download REAL, upload REAL)'
         cursor.execute(sql)
         self.conn.commit()
 
@@ -47,12 +47,12 @@ class LogPersistence(object):
         cursor.execute(sql, daterange)
         return cursor.fetchall()
 
-    def fetch_last(self):
+    def fetch_last(self, type):
         """
         Fetches the last entry
         """
         cursor = self.conn.cursor()
-        sql = 'SELECT measure_dt, ping, download, upload FROM speedlogs ORDER BY measure_dt DESC'
+        sql = 'SELECT {} FROM speedlogs ORDER BY measure_dt DESC LIMIT 1'.format(type)
         cursor.execute(sql)
         return cursor.fetchone()
 
@@ -66,4 +66,3 @@ class LogPersistence(object):
         sql = 'INSERT INTO speedlogs (measure_dt, ping, download, upload) VALUES (?, ?, ?, ?)'
         cursor.execute(sql, params)
         self.conn.commit()
-        
