@@ -36,7 +36,7 @@ def my_type_is(type):
         with LogPersistence(CONFIG['database']) as persistence:
             response = persistence.fetch_last(type)
             if (type == "download" or type == "upload"):
-                result = str(int(response[0] / 1048567)) + " Mbits/Sekunde"
+                result = str(int(response[0] / 1048567)) + " Mbit/Sekunde"
             else:
                 result = str(int(response[0]))
             speed_text = render_template('known_type', currentSpeed=result, type=type).encode('utf8')
