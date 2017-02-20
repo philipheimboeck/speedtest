@@ -54,7 +54,7 @@ You might adapt the script to import your own files.
 To measure your speed all 15 minutes, add the following line to your crontab.
 
 ```
-*/15 * * * * python /path/to/speedtest.py
+*/15 * * * * python /path/to/speedtest.py /path/to/config.json
 ```
 
 ## Installation Speedtest Alexa Skill
@@ -87,9 +87,9 @@ All you need to do now is to make sure you have at least one record in the `spee
 
 ## Setup Twitter
 
-Once you have setup your [Twitter App][twitterApp] you should udpate the `twitter_*` values in the config.json. Then it should tweet automatically. Do not forget to set the 'twitter_enabled' value in your config to true.
+Once you have setup your [Twitter App][twitterApp] you should udpate the `twitter_*` values in the config.json. Then it should tweet automatically. Do not forget to set the `twitter_enabled` value in your config to true.
 
-# Authors
+## Authors
 
 - [Philip Heimböck][pheimboeck] [![Twitter Follow philipheimboeck](https://img.shields.io/twitter/follow/pheimboeck.svg?style=social&label=Follow)](https://twitter.com/pheimboeck)
 - [Stefan Natter][natterstefan] (Fork) [![Twitter Follow natterstefan](https://img.shields.io/twitter/follow/natterstefan.svg?style=social&label=Follow)](https://twitter.com/natterstefan)
