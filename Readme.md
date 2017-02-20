@@ -1,6 +1,14 @@
-# Speedtest
+# Speedtest Alexa-Skill and Cronjob
 
-## Installation
+[![GitHub stars](https://img.shields.io/github/stars/natterstefan/speedtest.svg)](https://github.com/natterstefan/speedtes/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/natterstefan/speedtest.svg)](https://github.com/natterstefan/speedtest/network)
+[![GitHub issues](https://img.shields.io/github/issues/natterstefan/speedtest.svg)](https://github.com/natterstefan/speedtest/issues)
+[![Twitter](https://img.shields.io/twitter/url/https/github.com/natterstefan/speedtest.svg?style=social)](https://twitter.com/intent/tweet?text=https://github.com/natterstefan/speedtest)
+
+An easy to use script test the speed (down-, upload and ping) of your ISP regularly (cronjob) and return the results with an Alexa Skill.
+
+
+## Installation Speedtest (Cronjob)
 
 * Install pip packages
 
@@ -19,13 +27,13 @@ sudo apt install python-tk
 Run `python speedtest.py` to measure the speed.
 It will automatically create a sqlite database if not already existing.
 
-## Plot a diagram
+### Plot a diagram
 
 Run `plot.py` to plot the last 60 days.
 
 ![Example Plot](doc/images/example.png)
 
-## Import CSV
+### Import CSV
 
 Run `import.py filename.csv` to import your existing data into your database.
 The CSV format to import is as follows:
@@ -38,7 +46,7 @@ date,time,timezone,ping,download (MBit/s),upload (MBit/s)
 
 You might adapt the script to import your own files.
 
-## Cronjob
+### Cronjob
 
 To measure your speed all 15 minutes, add the following line to your crontab.
 
@@ -46,3 +54,43 @@ To measure your speed all 15 minutes, add the following line to your crontab.
 */15 * * * * python /path/to/speedtest.py
 ```
 
+## Installation Speedtest Alexa Skill
+
+### Installation of Flask-Ask and Ngrok
+
+First you need to install [Flask-Ask][flaskask] with:
+
+`pip install flask-ask`
+
+In the next step you need to go to [https://ngrok.com/download][ngrok] and download the latest Linux ARM build with:
+
+`wget https://.../ngrok-stable-linux-arm.zip`
+
+Now you can run your ngrok Server with:
+
+`./ngrok http 5000`
+
+Your Localhost-Server with a ngrok-Subdomain is now running. The output of this command looks similar to this. To use this Alexa-Skill you need to copy the HTTPS-Address into the Amazon Developer Console later.
+
+![ngrok Example](http://i.imgur.com/G4ArV3V.png)
+
+### Setup Alexa Skill
+
+Follow the instructions [here][alexadocu] (starting from Configure the Skill) and copy the necessary code snippets from `speech_assets` folder into the necessary places.
+
+### Start the Alexa Skill
+
+All you need to do now is to make sure you have at least one record in the `speedtest.db` and then run `python alexa.py`.
+
+
+# Authors
+
+- [Philip Heimböck][pheimboeck] [![Twitter Follow philipheimboeck](https://img.shields.io/twitter/follow/pheimboeck.svg?style=social&label=Follow)](https://twitter.com/pheimboeck)
+- [Stefan Natter][natterstefan] (Fork) [![Twitter Follow natterstefan](https://img.shields.io/twitter/follow/natterstefan.svg?style=social&label=Follow)](https://twitter.com/natterstefan)
+
+
+[flaskask]: https://github.com/johnwheeler/flask-ask
+[ngrok]: https://ngrok.com/download
+[alexadocu]: https://developer.amazon.com/blogs/post/Tx14R0IYYGH3SKT/flask-ask-a-new-python-framework-for-rapid-alexa-skills-kit-development
+[pheimboeck]: https://github.com/philipheimboeck/speedtest
+[natterstefan]: https://github.com/natterstefan/speedtest
