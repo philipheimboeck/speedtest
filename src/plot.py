@@ -12,8 +12,11 @@ matplotlib.use('Agg')
 
 import matplotlib.pyplot as plt
 from persistence import LogPersistence
+import config
 
-with LogPersistence('speedtest.db') as persistence:
+CONFIG = config.load_config()
+
+with LogPersistence(CONFIG['database']) as persistence:
     # Fetch the data
     START = datetime.now() - timedelta(60)
     DATA = persistence.fetch((START, datetime.now()))

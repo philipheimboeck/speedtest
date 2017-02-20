@@ -7,6 +7,9 @@
 
 An easy to use script test the speed (down-, upload and ping) of your ISP regularly (cronjob) and return the results with an Alexa Skill.
 
+## Configuration
+
+Copy `config.json.dist` to `config.json` and setup the values.
 
 ## Installation Speedtest (Cronjob)
 
