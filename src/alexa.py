@@ -99,6 +99,10 @@ def tweetCurrentSpeed(answer):
         reprompt_text = render_template('error_reprompt').encode('utf8')
         return question(statement_text).reprompt(reprompt_text).simple_card(card_title, error_text)
 
+@ask.intent('AMAZON.StopIntent')
+def stop():
+    statement_text = render_template('stop').encode('utf8')
+    return statement(statement_text)
 
 @ask.session_ended
 def session_ended():

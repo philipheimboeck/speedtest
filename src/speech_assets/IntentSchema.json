@@ -17,6 +17,9 @@
           "type": "LIST_OF_ANSWERS"
         }
       ]
+    },
+    {
+      "intent": "AMAZON.StopIntent"
     }
   ]
 }
