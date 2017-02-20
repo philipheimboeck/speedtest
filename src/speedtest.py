@@ -5,11 +5,15 @@ Executable that does a speedtest and saves it to the database
 """
 
 from datetime import datetime
+import sys
 from persistence import LogPersistence
 import pyspeedtest
 import config
 
-CONFIG = config.load_config()
+if len(sys.argv) > 1:
+    CONFIG = config.load_config(sys.argv[1])
+else:
+    CONFIG = config.load_config()
 
 def test_speed():
     """
