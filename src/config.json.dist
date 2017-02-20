@@ -1,5 +1,6 @@
 {
     "database": "path/to/speedtest.db",
+    "twitter_enabled": false,
     "twitter_consumer_key": "your_consumer_key",
     "twitter_consumer_secret": "your_consumer_secret",
     "twitter_access_token_key": "your_access_token_key",
