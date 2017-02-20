@@ -1,3 +1,3 @@
 pyspeedtest==1.2.7
 matplotlib==2.0
-python-tk
+flask-ask==0.8.7
