@@ -40,6 +40,7 @@ def my_type_is(type):
         session.attributes[TYPE_KEY] = type
         with LogPersistence(CONFIG['database']) as persistence:
             response = persistence.fetch_last(type)
+            print response
             if (type == "download" or type == "upload"):
                 session.attributes[RESULT_KEY] = int(response[0] / 1048567)
                 result = str(session.attributes[RESULT_KEY]) + " Mbit/Sekunde"
@@ -47,10 +48,16 @@ def my_type_is(type):
                 session.attributes[RESULT_KEY] = int(response[0])
                 result = str(session.attributes[RESULT_KEY])
 
-            speed_text = render_template('known_type', currentSpeed=result, type=type).encode('utf8')
+            speed_text = render_template(
+                'known_type',
+                currentSpeed=result,
+                type=type,
+                measure_date=response[1].strftime('%Y%m%d'),
+                measure_time=response[1].strftime('%H:%M')
+            ).encode('utf8')
             speed_reprompt = render_template('known_type_repromt', type=type).encode('utf8')
 
-            return question(speed_text).reprompt(speed_reprompt).simple_card(card_title, speed_text)
+            return question('<speak>{}</speak>'.format(speed_text)).reprompt(speed_reprompt).simple_card(card_title, speed_text)
     else:
         question_text = render_template('unknown_type').encode('utf8')
         reprompt_text = render_template('unknown_type_reprompt').encode('utf8')
