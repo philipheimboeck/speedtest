@@ -13,8 +13,7 @@ from flask_ask import Ask, request, session, question, statement
 from persistence import LogPersistence
 import config
 
-#from TwitterAPI import TwitterAPI
-#api = TwitterAPI(consumer_key, consumer_secret, access_token_key, access_token_secret)
+from TwitterAPI import TwitterAPI
 
 app = Flask(__name__)
 ask = Ask(app, "/")
@@ -25,6 +24,7 @@ TYPE_KEY = "Type"
 RESULT_KEY = "Result"
 
 CONFIG = config.load_config()
+api = TwitterAPI(CONFIG['twitter_consumer_key'], CONFIG['twitter_consumer_secret'], CONFIG['twitter_access_token_key'], CONFIG['twitter_access_token_secret'])
 
 @ask.launch
 def launch():
@@ -69,8 +69,7 @@ def tweetCurrentSpeed(answer):
         'ping': str(result),
         }[type]
         tweet_text = render_template('tweet_text', currentSpeed=result_text, type=type).encode('utf8')
-        #r = api.request('statuses/update', {'status':tweet_text})
-        return statement(tweet_text)
+        r = api.request('statuses/update', {'status':tweet_text})
         if (r.status_code == 200):
             statement_text = render_template('tweet_success').encode('utf8')
             return statement(statement_text).simple_card(card_title, statement_text)
