@@ -60,7 +60,7 @@ def my_type_is(type):
             if (CONFIG['twitter_enabled'] is not None and CONFIG['twitter_enabled'] == True ):
                 return question('<speak>{}</speak>'.format(speed_text)).reprompt(speed_reprompt).simple_card(card_title, speed_text)
 
-            return question('<speak>{}</speak>'.format(speed_text)).reprompt(speed_reprompt).simple_card(card_title, speed_text)
+            return statement('<speak>{}</speak>'.format(speed_text)).simple_card(card_title, speed_text)
     else:
         question_text = render_template('unknown_type').encode('utf8')
         reprompt_text = render_template('unknown_type_reprompt').encode('utf8')
