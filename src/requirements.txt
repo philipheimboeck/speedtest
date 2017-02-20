@@ -1,3 +1,2 @@
 pyspeedtest==1.2.7
 matplotlib==2.0
-python-tk
