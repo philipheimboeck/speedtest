@@ -4,8 +4,6 @@
 [![GitHub forks](https://img.shields.io/github/forks/natterstefan/speedtest.svg)](https://github.com/natterstefan/speedtest/network)
 [![GitHub issues](https://img.shields.io/github/issues/natterstefan/speedtest.svg)](https://github.com/natterstefan/speedtest/issues)
 [![Twitter](https://img.shields.io/twitter/url/https/github.com/natterstefan/speedtest.svg?style=social)](https://twitter.com/intent/tweet?text=https://github.com/natterstefan/speedtest)
-[![Twitter Follow philipheimboeck](https://img.shields.io/twitter/follow/pheimboeck.svg?style=social&label=Follow)](https://twitter.com/pheimboeck)
-[![Twitter Follow natterstefan](https://img.shields.io/twitter/follow/natterstefan.svg?style=social&label=Follow)](https://twitter.com/natterstefan)
 
 An easy to use script test the speed (down-, upload and ping) of your ISP regularly (cronjob) and return the results with an Alexa Skill.
 
@@ -87,7 +85,8 @@ All you need to do now is to make sure you have at least one record in the `spee
 
 # Authors
 
-Author: [Philipp Heimböck][pheimboeck], [Stefan Natter][natterstefan] (Fork)
+- [Philipp Heimböck][pheimboeck] [![Twitter Follow philipheimboeck](https://img.shields.io/twitter/follow/pheimboeck.svg?style=social&label=Follow)](https://twitter.com/pheimboeck)
+- [Stefan Natter][natterstefan] (Fork) [![Twitter Follow natterstefan](https://img.shields.io/twitter/follow/natterstefan.svg?style=social&label=Follow)](https://twitter.com/natterstefan)
 
 
 [flaskask]: https://github.com/johnwheeler/flask-ask
