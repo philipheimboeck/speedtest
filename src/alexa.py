@@ -20,9 +20,9 @@ TYPE_KEY = "Type"
 
 @ask.launch
 def launch():
-    card_title = render_template('card_title')
-    question_text = render_template('welcome')
-    reprompt_text = render_template('welcome_reprompt')
+    card_title = render_template('card_title').encode('utf8')
+    question_text = render_template('welcome').encode('utf8')
+    reprompt_text = render_template('welcome_reprompt').encode('utf8')
     return question(question_text).reprompt(reprompt_text).simple_card(card_title, question_text)
 
 @ask.intent('CurrentSpeedIntent', mapping={'type': 'Type'})
@@ -31,12 +31,16 @@ def my_type_is(type):
     if type is not None:
         session.attributes[TYPE_KEY] = type
         with LogPersistence('speedtest.db') as persistence:
-            response = persistence.fetch_last(type) ##TODO modify the response (eg remove ()) and calculate mb/s
-            speed_text = render_template('known_type', currentSpeed=response, type=type)
+            response = persistence.fetch_last(type)
+            if (type == "download" or type == "upload"):
+                result = str(int(response[0] / 1048567)) + " Mbits/Sekunde"
+            else:
+                result = str(int(response[0]))
+            speed_text = render_template('known_type', currentSpeed=result, type=type).encode('utf8')
             return statement(speed_text).simple_card(card_title, speed_text)
     else:
-        question_text = render_template('unknown_type')
-        reprompt_text = render_template('unknown_type_reprompt')
+        question_text = render_template('unknown_type').encode('utf8')
+        reprompt_text = render_template('unknown_type_reprompt').encode('utf8')
         return statement(question_text).reprompt(reprompt_text).simple_card(card_title, question_text)
 
 @ask.session_ended

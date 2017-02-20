@@ -6,7 +6,7 @@ welcome_reprompt: Bitte sag mir was ich testen soll. Sag dazu bitte wie schnell 
 known_type: |
     Deine {{ type }} Geschwindigkeit aktuell ist {{ currentSpeed }}.
 
-unknown_type: Ich bin mir nicht sicher, was du testen mochtest. Bitte versuche es erneut.
+unknown_type: Ich bin mir nicht sicher, was du testen möchtest. Bitte versuche es erneut.
 
 unknown_type_reprompt: |
     Bitte sag mir was ich testen soll. Sag dazu bitte teste den Download fur mich.
