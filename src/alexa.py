@@ -12,6 +12,9 @@ from flask_ask import Ask, request, session, question, statement
 
 from persistence import LogPersistence
 
+#from TwitterAPI import TwitterAPI
+#api = TwitterAPI(consumer_key, consumer_secret, access_token_key, access_token_secret)
+
 app = Flask(__name__)
 ask = Ask(app, "/")
 logging.getLogger('flask_ask').setLevel(logging.DEBUG)
@@ -57,20 +60,35 @@ def tweetCurrentSpeed(answer):
     result = session.attributes.get(RESULT_KEY)
 
     if (answer == "ja" and result > 0):
-        statement_text = render_template('tweet_text', currentSpeed=result, type=type).encode('utf8')
-        #TODO add tweet
-        return statement(statement_text).simple_card(card_title, statement_text)
+        result_text = {
+        'download': str(result) + " Mbit/Sekunde",
+        'upload': str(result) + " Mbit/Sekunde",
+        'ping': str(result),
+        }[type]
+        tweet_text = render_template('tweet_text', currentSpeed=result_text, type=type).encode('utf8')
+        #r = api.request('statuses/update', {'status':tweet_text})
+        return statement(tweet_text)
+        if (r.status_code == 200):
+            statement_text = render_template('tweet_success').encode('utf8')
+            return statement(statement_text).simple_card(card_title, statement_text)
+        else:
+            statement_text = render_template('tweet_error').encode('utf8')
+            reprompt_text = render_template('error_reprompt').encode('utf8')
+            return question(statement_text).reprompt(reprompt_text)
+
     elif (answer == "nein" or result > 0):
         statement_text = render_template('exit').encode('utf8')
         return statement(statement_text)
+
     elif (result <= 0):
         statement_text = render_template('tweet_noResult').encode('utf8')
         repromt_text = render_template('unknown_type_reprompt').encode('utf8')
         return question(statement_text).reprompt(repromt_text)
+
     else:
-        question_text = render_template('error').encode('utf8')
+        statement_text = render_template('error').encode('utf8')
         reprompt_text = render_template('error_reprompt').encode('utf8')
-        return question(question_text).reprompt(reprompt_text).simple_card(card_title, question_text)
+        return question(statement_text).reprompt(reprompt_text).simple_card(card_title, error_text)
 
 
 @ask.session_ended

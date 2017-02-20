@@ -1,3 +1,12 @@
+card_title: Speedtest
+
+exit: Alles klar.
+
+error: |
+  Ich bin mir nicht sicher, ob ich das richtig verstanden habe. Bitte versuche es erneut.
+
+error_reprompt: Bitte sag mir erneut, was du möchtest.
+
 welcome: |
     Willkommen beim Speedtest-Skill. Sag mir was ich für dich testen soll, in dem du sagst wie schnell ist mein Download.
 
@@ -14,17 +23,12 @@ unknown_type: Ich bin mir nicht sicher, was du testen möchtest. Bitte versuche 
 unknown_type_reprompt: |
     Bitte sag mir was ich testen soll. Sag dazu bitte beispielsweise teste den Download fur mich.
 
-card_title: Speedtest
-
 tweet_text:  |
     Meine aktuelle {{ type }} Geschwindigkeit ist {{ currentSpeed }}. #speedtest
 
+tweet_success: Dein Tweet wurde erfolgreich veröffentlicht.
+
+tweet_error: Leider konnte ich deinen Tweet nicht veröffentlichen. Bitte starte den Prozess erneut.
+
 tweet_noResult:  |
     Du hast kein Resultat oder es ist 0. Starte den Test erneut.
-
-exit: Alles klar.
-
-error: |
-  Ich bin mir nicht sicher, ob ich das richtig verstanden habe. Bitte versuche es erneut.
-
-error_reprompt: Bitte sag mir erneut, was du möchtest.
