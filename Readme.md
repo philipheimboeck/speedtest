@@ -98,6 +98,6 @@ Once you have setup your [Twitter App][twitterApp] you should udpate the `twitte
 [flaskask]: https://github.com/johnwheeler/flask-ask
 [ngrok]: https://ngrok.com/download
 [alexadocu]: https://developer.amazon.com/blogs/post/Tx14R0IYYGH3SKT/flask-ask-a-new-python-framework-for-rapid-alexa-skills-kit-development
-[pheimboeck]: https://github.com/philipheimboeck/speedtest
-[natterstefan]: https://github.com/natterstefan/speedtest
+[pheimboeck]: https://github.com/philipheimboeck
+[natterstefan]: https://github.com/natterstefan
 [twitterApp]: https://apps.twitter.com/
