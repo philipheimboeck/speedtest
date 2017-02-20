@@ -1,9 +1,9 @@
 # Speedtest Alexa-Skill and Cronjob
 
-[![GitHub stars](https://img.shields.io/github/stars/natterstefan/speedtest.svg)](https://github.com/natterstefan/speedtes/stargazers)
-[![GitHub forks](https://img.shields.io/github/forks/natterstefan/speedtest.svg)](https://github.com/natterstefan/speedtest/network)
-[![GitHub issues](https://img.shields.io/github/issues/natterstefan/speedtest.svg)](https://github.com/natterstefan/speedtest/issues)
-[![Twitter](https://img.shields.io/twitter/url/https/github.com/natterstefan/speedtest.svg?style=social)](https://twitter.com/intent/tweet?text=https://github.com/natterstefan/speedtest)
+[![GitHub stars](https://img.shields.io/github/stars/philipheimboeck/speedtest.svg)](https://github.com/philipheimboeck/speedtes/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/philipheimboeck/speedtest.svg)](https://github.com/philipheimboeck/speedtest/network)
+[![GitHub issues](https://img.shields.io/github/issues/philipheimboeck/speedtest.svg)](https://github.com/philipheimboeck/speedtest/issues)
+[![Twitter](https://img.shields.io/twitter/url/https/github.com/philipheimboeck/speedtest.svg?style=social)](https://twitter.com/intent/tweet?text=https://github.com/philipheimboeck/speedtest)
 
 An easy to use script test the speed (down-, upload and ping) of your ISP regularly (cronjob) and return the results with an Alexa Skill.
 
