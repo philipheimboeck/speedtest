@@ -7,11 +7,26 @@
 
 An easy to use script test the speed (down-, upload and ping) of your ISP regularly (cronjob) and return the results with an Alexa Skill.
 
+##Table of contents
+
+  * [Configuration](#configuration)
+  * [Installation](#installation)
+  * [Start the Speedtest](#start-the-speedtest)
+    * [Plot a Diagramm](#plot-a-diagram)
+    * [Import CSV](#import-csv)
+    * [Cronjob](#cronjob)
+  * [Installation Speedtest Alexa Skill](#installation-speedtest-alexa-skill)
+    * [Installation of Flask-Ask and Ngrok](#installation-of-flask-ask-and-ngrok)
+    * [Setup Alexa Skill](#setup-alexa-skill)
+    * [Start Alexa Skill](#start-alexa-skill) 
+  * [Setup Twitter](#setup-twitter)
+  * [Contributors](#contributors)
+
 ## Configuration
 
 Copy `config.json.dist` to `config.json` and setup the values.
 
-## Installation Speedtest (Cronjob)
+## Installation
 
 * Install pip packages
 
@@ -25,7 +40,7 @@ pip install -r requirements.txt
 sudo apt install python-tk
 ```
 
-## Measure the speed
+## Start the Speedtest
 
 Run `python speedtest.py` to measure the speed.
 It will automatically create a sqlite database if not already existing.
@@ -81,7 +96,7 @@ Your Localhost-Server with a ngrok-Subdomain is now running. The output of this 
 
 Follow the instructions [here][alexadocu] (starting from Configure the Skill) and copy the necessary code snippets from `speech_assets` folder into the necessary places.
 
-### Start the Alexa Skill
+### Start Alexa Skill
 
 All you need to do now is to make sure you have at least one record in the `speedtest.db` and then run `python alexa.py`.
 
