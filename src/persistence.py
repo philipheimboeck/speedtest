@@ -52,7 +52,7 @@ class LogPersistence(object):
         Fetches the last entry
         """
         cursor = self.conn.cursor()
-        sql = 'SELECT {} FROM speedlogs ORDER BY measure_dt DESC LIMIT 1'.format(type)
+        sql = 'SELECT {}, measure_dt FROM speedlogs ORDER BY measure_dt DESC LIMIT 1'.format(type)
         cursor.execute(sql)
         return cursor.fetchone()
 

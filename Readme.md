@@ -85,6 +85,9 @@ Follow the instructions [here][alexadocu] (starting from Configure the Skill) an
 
 All you need to do now is to make sure you have at least one record in the `speedtest.db` and then run `python alexa.py`.
 
+## Setup Twitter
+
+Once you have setup your [Twitter App][twitterApp] you should udpate the `twitter_*` values in the config.json. Then it should tweet automatically. Do not forget to set the 'twitter_enabled' value in your config to true.
 
 # Authors
 
@@ -97,3 +100,4 @@ All you need to do now is to make sure you have at least one record in the `spee
 [alexadocu]: https://developer.amazon.com/blogs/post/Tx14R0IYYGH3SKT/flask-ask-a-new-python-framework-for-rapid-alexa-skills-kit-development
 [pheimboeck]: https://github.com/philipheimboeck/speedtest
 [natterstefan]: https://github.com/natterstefan/speedtest
+[twitterApp]: https://apps.twitter.com/
