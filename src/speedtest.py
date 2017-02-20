@@ -7,8 +7,9 @@ Executable that does a speedtest and saves it to the database
 from datetime import datetime
 from persistence import LogPersistence
 import pyspeedtest
+import config
 
-
+CONFIG = config.load_config()
 
 def test_speed():
     """
@@ -22,11 +23,10 @@ def test_speed():
         'measure_dt': datetime.now()
         }
 
-with LogPersistence('speedtest.db') as persistence:
+with LogPersistence(CONFIG['database']) as persistence:
 
     # Speedtest
     SPEED = test_speed()
     print SPEED
 
     persistence.save(SPEED)
-    

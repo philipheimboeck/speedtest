@@ -11,12 +11,15 @@ from flask import Flask, json, render_template
 from flask_ask import Ask, request, session, question, statement
 
 from persistence import LogPersistence
+import config
 
 app = Flask(__name__)
 ask = Ask(app, "/")
 logging.getLogger('flask_ask').setLevel(logging.DEBUG)
 
 TYPE_KEY = "Type"
+
+CONFIG = config.load_config()
 
 @ask.launch
 def launch():
@@ -30,7 +33,7 @@ def my_type_is(type):
     card_title = render_template('card_title')
     if type is not None:
         session.attributes[TYPE_KEY] = type
-        with LogPersistence('speedtest.db') as persistence:
+        with LogPersistence(CONFIG['database']) as persistence:
             response = persistence.fetch_last(type)
             if (type == "download" or type == "upload"):
                 result = str(int(response[0] / 1048567)) + " Mbits/Sekunde"
