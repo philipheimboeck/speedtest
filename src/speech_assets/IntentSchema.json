@@ -19,7 +19,22 @@
       ]
     },
     {
-      "intent": "MeasureSpeedIntent"
+      "intent": "MeasureSpeedIntent",
+      "slots": [
+        {
+          "name": "Type",
+          "type": "LIST_OF_TYPES"
+        }
+      ]
+    },
+    {
+      "intent": "StatsOfToday",
+      "slots": [
+        {
+          "name": "Type",
+          "type": "LIST_OF_TYPES"
+        }
+      ]
     },
     {
       "intent": "AMAZON.StopIntent"

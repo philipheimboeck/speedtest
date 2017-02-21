@@ -22,6 +22,8 @@ logging.getLogger('flask_ask').setLevel(logging.DEBUG)
 ## Globals
 TYPE_KEY = "Type"
 RESULT_KEY = "Result"
+bitDivider = 1048567
+speedType = " Mbit/Sekunde"
 
 CONFIG = config.load_config()
 TWITTER_API = TwitterAPI(
@@ -53,8 +55,8 @@ def my_type_is(type):
             response = persistence.fetch_last(type)
             print response
             if type == "download" or type == "upload":
-                session.attributes[RESULT_KEY] = int(response[0] / 1048567)
-                result = str(session.attributes[RESULT_KEY]) + " Mbit/Sekunde"
+                session.attributes[RESULT_KEY] = int(response[0] / bitDivider)
+                result = str(session.attributes[RESULT_KEY]) + speedType
             else:
                 session.attributes[RESULT_KEY] = int(response[0])
                 result = str(session.attributes[RESULT_KEY])
@@ -134,6 +136,48 @@ def start_measurement():
     measure.start_speedtest(config=CONFIG)
     statement_text = render_template('measure').encode('utf8')
     return statement(statement_text)
+
+@ask.intent('StatsOfToday', mapping={'type': 'Type'})
+def get_stats(type):
+    """
+    Get the Max, Min, Avg and Count of the given type of todays results
+    """
+    card_title = render_template('card_title')
+    if type is not None:
+        session.attributes[TYPE_KEY] = type
+        print type
+        with LogPersistence(CONFIG['database']) as persistence:
+            response = persistence.fetch_stats_of_today(type)
+            print response
+            if type == "download" or type == "upload":
+                speedMax = str(int(response[0] / bitDivider)) + speedType
+                speedMin = str(int(response[1] / bitDivider)) + speedType
+                speedAvg = str(int(response[2] / bitDivider)) + speedType
+                speedCount = response[3]
+            else:
+                speedMax = response[0]
+                speedMin = response[1]
+                speedAvg = response[2]
+                speedCount = response[3]
+
+            # Choose the template
+            speed_text = render_template(
+                'stats_text',
+                max=speedMax,
+                min=speedMin,
+                avg=speedAvg,
+                count=speedCount,
+                type=type
+            ).encode('utf8')
+
+            return statement('<speak>{}</speak>'.format(speed_text)) \
+                .simple_card(card_title, speed_text)
+    else:
+        question_text = render_template('unknown_type').encode('utf8')
+        reprompt_text = render_template('unknown_type_reprompt').encode('utf8')
+        return question(question_text).reprompt(reprompt_text)\
+            .simple_card(card_title, question_text)
+
 
 @ask.intent('AMAZON.StopIntent')
 def stop():

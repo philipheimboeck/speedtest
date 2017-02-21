@@ -40,3 +40,6 @@ tweet_noResult:  |
 
 measure: |
     Ich starte eine Messung. Bitte frag mich in einer Minute nach dem Ergebnis.
+
+stats_text:  |
+  Ich habe mir dein {{ type }} Resultate von heute angesehen. Mir liegen {{ count }} Resultate vor. Dein maximal Wert liegt bei {{ max }} und dein Minimum bei {{ min }}. Deine durchschnittliche Geschwindigkeit liegt heute bei {{ avg }}.
