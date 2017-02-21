@@ -18,11 +18,8 @@ MeasureSpeedIntent starte eine neue Messung
 MeasureSpeedIntent starte eine weitere Messung
 
 StatsOfToday was kannst du mir zur heutigen {Type} geschwindigkeit sagen
-StatsOfToday was kannst du mir zur heutigen {Type} sagen
-StatsOfToday was kannst du mir zur heutigen {Type} geschwindigkeit sagen
-StatsOfToday was kannst du mir zur heutigen {Type} sagen
-StatsOfToday was kannst du mir zur heutigen {Type} geschwindigkeit sagen
-StatsOfToday was kannst du mir zur heutigen {Type} sagen
+StatsOfToday was kannst du mir zum heutigen {Type} sagen
 StatsOfToday wie gut ist mein {Type} heute
-StatsOfToday wie gut ist mein {Type} heute
-StatsOfToday wie gut ist mein {Type} heute
+StatsOfToday wie gut ist mein internet heute
+StatsOfToday was kannst du mir zum heutigen internet sagen
+StatsOfToday was kannst du mir zur heutigen internet geschwindigkeit sagen
