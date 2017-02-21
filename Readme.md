@@ -18,8 +18,9 @@ An easy to use script test the speed (down-, upload and ping) of your ISP regula
   * [Installation Speedtest Alexa Skill](#installation-speedtest-alexa-skill)
     * [Installation of Flask-Ask and Ngrok](#installation-of-flask-ask-and-ngrok)
     * [Setup Alexa Skill](#setup-alexa-skill)
-    * [Start Alexa Skill](#start-alexa-skill) 
+    * [Start Alexa Skill](#start-alexa-skill)
   * [Setup Twitter](#setup-twitter)
+  * [FAQ](#FAQ)
   * [Contributors](#contributors)
 
 ## Configuration
@@ -103,6 +104,12 @@ All you need to do now is to make sure you have at least one record in the `spee
 ## Setup Twitter
 
 Once you have setup your [Twitter App][twitterApp] you should udpate the `twitter_*` values in the config.json. Then it should tweet automatically. Do not forget to set the `twitter_enabled` value in your config to true.
+
+## FAQ
+
+### How to setup the path to the `*.db` on a Raspberry Pi?
+
+If you run into a problem like `sqlite3.OperationalError: unable to open database file` you should make sure, that your `config.json` does not include `~` at the beginning of the `database` path. Example: `/home/pi/speedtest/src/example.db` will work, but `~/home/pi/speedtest/src/example.db` not.
 
 ## Contributors
 
