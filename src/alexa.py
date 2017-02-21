@@ -7,13 +7,12 @@ Executable that handles the Alexa requests
 
 import logging
 
-from flask import Flask, json, render_template
-from flask_ask import Ask, request, session, question, statement
-
-from persistence import LogPersistence
-import config
-
+from flask import Flask, render_template
+from flask_ask import Ask, question, session, statement
 from TwitterAPI import TwitterAPI
+
+import config
+from persistence import LogPersistence
 
 app = Flask(__name__)
 ask = Ask(app, "/")
@@ -41,26 +40,33 @@ def my_type_is(type):
         with LogPersistence(CONFIG['database']) as persistence:
             response = persistence.fetch_last(type)
             print response
-            if (type == "download" or type == "upload"):
+            if type == "download" or type == "upload":
                 session.attributes[RESULT_KEY] = int(response[0] / 1048567)
                 result = str(session.attributes[RESULT_KEY]) + " Mbit/Sekunde"
             else:
                 session.attributes[RESULT_KEY] = int(response[0])
                 result = str(session.attributes[RESULT_KEY])
 
+            twitter_enabled = CONFIG['twitter_enabled'] is not None and CONFIG['twitter_enabled']
+
+            # Choose the template
+            template = 'known_type_tweet' if twitter_enabled else 'known_type'
             speed_text = render_template(
-                'known_type',
+                template,
                 currentSpeed=result,
                 type=type,
                 measure_date=response[1].strftime('%Y%m%d'),
                 measure_time=response[1].strftime('%H:%M')
             ).encode('utf8')
-            speed_reprompt = render_template('known_type_repromt', type=type).encode('utf8')
 
-            if (CONFIG['twitter_enabled'] is not None and CONFIG['twitter_enabled'] == True ):
-                return question('<speak>{}</speak>'.format(speed_text)).reprompt(speed_reprompt).simple_card(card_title, speed_text)
+            if twitter_enabled:
+                # If twitter is enabled, we ask a question instead of stating something
+                speed_reprompt = render_template('known_type_repromt', type=type).encode('utf8')
+                return question('<speak>{}</speak>'.format(speed_text)) \
+                    .reprompt(speed_reprompt).simple_card(card_title, speed_text)
 
-            return statement('<speak>{}</speak>'.format(speed_text)).simple_card(card_title, speed_text)
+            return statement('<speak>{}</speak>'.format(speed_text)) \
+                .simple_card(card_title, speed_text)
     else:
         question_text = render_template('unknown_type').encode('utf8')
         reprompt_text = render_template('unknown_type_reprompt').encode('utf8')
