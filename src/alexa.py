@@ -13,9 +13,10 @@ from TwitterAPI import TwitterAPI
 
 import config
 from persistence import LogPersistence
+import measure
 
-app = Flask(__name__)
-ask = Ask(app, "/")
+APP = Flask(__name__)
+ask = Ask(APP, "/")
 logging.getLogger('flask_ask').setLevel(logging.DEBUG)
 
 ## Globals
@@ -23,10 +24,18 @@ TYPE_KEY = "Type"
 RESULT_KEY = "Result"
 
 CONFIG = config.load_config()
-api = TwitterAPI(CONFIG['twitter_consumer_key'], CONFIG['twitter_consumer_secret'], CONFIG['twitter_access_token_key'], CONFIG['twitter_access_token_secret'])
+TWITTER_API = TwitterAPI(
+    CONFIG['twitter_consumer_key'],
+    CONFIG['twitter_consumer_secret'],
+    CONFIG['twitter_access_token_key'],
+    CONFIG['twitter_access_token_secret']
+)
 
 @ask.launch
 def launch():
+    """
+    Speedtest started
+    """
     card_title = render_template('card_title').encode('utf8')
     question_text = render_template('welcome').encode('utf8')
     reprompt_text = render_template('welcome_reprompt').encode('utf8')
@@ -34,6 +43,9 @@ def launch():
 
 @ask.intent('CurrentSpeedIntent', mapping={'type': 'Type'})
 def my_type_is(type):
+    """
+    Get the last speedtest result
+    """
     card_title = render_template('card_title')
     if type is not None:
         session.attributes[TYPE_KEY] = type
@@ -70,23 +82,28 @@ def my_type_is(type):
     else:
         question_text = render_template('unknown_type').encode('utf8')
         reprompt_text = render_template('unknown_type_reprompt').encode('utf8')
-        return question(question_text).reprompt(reprompt_text).simple_card(card_title, question_text)
+        return question(question_text).reprompt(reprompt_text)\
+            .simple_card(card_title, question_text)
 
 @ask.intent('TweetCurrentSpeed', mapping={'answer': 'Answer'})
 def tweetCurrentSpeed(answer):
+    """
+    Use twitterAPI to send out the last result
+    """
     card_title = render_template('card_title')
     type = session.attributes.get(TYPE_KEY)
     result = session.attributes.get(RESULT_KEY)
 
-    if (answer == "ja" and result > 0):
+    if answer == "ja" and result > 0:
         result_text = {
-        'download': str(result) + " Mbit/Sekunde",
-        'upload': str(result) + " Mbit/Sekunde",
-        'ping': str(result),
+            'download': str(result) + " Mbit/Sekunde",
+            'upload': str(result) + " Mbit/Sekunde",
+            'ping': str(result),
         }[type]
-        tweet_text = render_template('tweet_text', currentSpeed=result_text, type=type).encode('utf8')
-        r = api.request('statuses/update', {'status':tweet_text})
-        if (r.status_code == 200):
+        tweet_text = render_template('tweet_text', currentSpeed=result_text, type=type)\
+            .encode('utf8')
+        response = TWITTER_API.request('statuses/update', {'status':tweet_text})
+        if response.status_code == 200:
             statement_text = render_template('tweet_success').encode('utf8')
             return statement(statement_text).simple_card(card_title, statement_text)
         else:
@@ -94,11 +111,11 @@ def tweetCurrentSpeed(answer):
             reprompt_text = render_template('error_reprompt').encode('utf8')
             return question(statement_text).reprompt(reprompt_text)
 
-    elif (answer == "nein" or result > 0):
+    elif answer == "nein" or result > 0:
         statement_text = render_template('exit').encode('utf8')
         return statement(statement_text)
 
-    elif (result <= 0):
+    elif result <= 0:
         statement_text = render_template('tweet_noResult').encode('utf8')
         repromt_text = render_template('unknown_type_reprompt').encode('utf8')
         return question(statement_text).reprompt(repromt_text)
@@ -106,16 +123,32 @@ def tweetCurrentSpeed(answer):
     else:
         statement_text = render_template('error').encode('utf8')
         reprompt_text = render_template('error_reprompt').encode('utf8')
-        return question(statement_text).reprompt(reprompt_text).simple_card(card_title, statement_text)
+        return question(statement_text).reprompt(reprompt_text)\
+            .simple_card(card_title, statement_text)
+
+@ask.intent('MeasureSpeedIntent')
+def start_measurement():
+    """
+    Start a measurement
+    """
+    measure.start_speedtest(config=CONFIG)
+    statement_text = render_template('measure').encode('utf8')
+    return statement(statement_text)
 
 @ask.intent('AMAZON.StopIntent')
 def stop():
+    """
+    Alexa Stop Intent
+    """
     statement_text = render_template('stop').encode('utf8')
     return statement(statement_text)
 
 @ask.session_ended
 def session_ended():
+    """
+    Will be called when session is ended
+    """
     return "", 200
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    APP.run(debug=True)

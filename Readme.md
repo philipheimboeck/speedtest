@@ -96,6 +96,15 @@ Your Localhost-Server with a ngrok-Subdomain is now running. The output of this 
 
 Follow the instructions [here][alexadocu] (starting from Configure the Skill) and copy the necessary code snippets from `speech_assets` folder into the necessary places.
 
+If you want to create more Utterances you'll find a useful tool to expand utterances [here](http://www.makermusings.com/amazon-echo-utterance-expander/).
+An example of how you would write them is shown below.
+
+```
+MeasureSpeedIntent messe die (upload / internet / download) (/geschwindigkeit)
+MeasureSpeedIntent nimm eine messung (/vor)
+MeasureSpeedIntent starte eine (/neue/weitere) Messung
+```
+
 ### Start Alexa Skill
 
 All you need to do now is to make sure you have at least one record in the `speedtest.db` and then run `python alexa.py`.
