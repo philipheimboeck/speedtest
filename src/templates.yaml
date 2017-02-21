@@ -17,6 +17,9 @@ welcome_reprompt: Bitte sag mir was ich testen soll. Sag dazu bitte wie schnell 
 known_type: |
     Am <say-as interpret-as="date">{{ measure_date }}</say-as> um {{ measure_time }} war deine {{ type }} Geschwindigkeit {{ currentSpeed }}.
 
+known_type_tweet: |
+    Am <say-as interpret-as="date">{{ measure_date }}</say-as> um {{ measure_time }} war deine {{ type }} Geschwindigkeit {{ currentSpeed }}. Soll ich das Ergebnis twittern?
+
 known_type_repromt: |
     Soll ich dein {{ type }} Ergebnis auf Twitter veröffentlichen?
 
