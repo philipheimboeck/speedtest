@@ -56,7 +56,7 @@ class LogPersistence(object):
         cursor.execute(sql)
         return cursor.fetchone()
 
-    def fetch_stats_of_today(self, type, daterange=(datetime.now().replace(hour=0, minute=0, second=0, microsecond=0), datetime.now())):
+    def fetch_stats(self, type, daterange=(datetime.now().replace(hour=0, minute=0, second=0, microsecond=0), datetime.now())):
         """
         Fetches the Max, Min, Avg and Count of the given type in a specified period
         :param daterange default period is today (00:00 am until now)

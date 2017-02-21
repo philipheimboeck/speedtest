@@ -147,7 +147,7 @@ def get_stats(type):
         session.attributes[TYPE_KEY] = type
         print type
         with LogPersistence(CONFIG['database']) as persistence:
-            response = persistence.fetch_stats_of_today(type)
+            response = persistence.fetch_stats(type)
             print response
             if type == "download" or type == "upload":
                 speedMax = str(int(response[0] / bitDivider)) + speedType
