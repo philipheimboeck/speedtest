@@ -19,6 +19,9 @@
       ]
     },
     {
+      "intent": "MeasureSpeedIntent"
+    },
+    {
       "intent": "AMAZON.StopIntent"
     }
   ]
