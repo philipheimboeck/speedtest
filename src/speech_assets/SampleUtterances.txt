@@ -5,3 +5,14 @@ CurrentSpeedIntent sag mir meine {Type} geschwindigkeit
 
 TweetCurrentSpeed {answer} bitte twitter das
 TweetCurrentSpeed {answer} bitte schicke einen tweet raus
+
+MeasureSpeedIntent messe den download
+MeasureSpeedIntent messe die download geschwindigkeit
+MeasureSpeedIntent messe das internet
+MeasureSpeedIntent messe die internet geschwindigkeit
+MeasureSpeedIntent messe den upload
+MeasureSpeedIntent messe die upload geschwindigkeit
+MeasureSpeedIntent nimm eine messung vor
+MeasureSpeedIntent starte eine Messung
+MeasureSpeedIntent starte eine neue Messung
+MeasureSpeedIntent starte eine weitere Messung

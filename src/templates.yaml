@@ -37,3 +37,6 @@ tweet_error: Leider konnte ich deinen Tweet nicht veröffentlichen. Bitte starte
 
 tweet_noResult:  |
     Du hast kein Resultat oder es ist 0. Starte den Test erneut.
+
+measure: |
+    Ich starte eine Messung. Bitte frag mich in einer Minute nach dem Ergebnis.
