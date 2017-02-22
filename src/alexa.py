@@ -22,8 +22,8 @@ logging.getLogger('flask_ask').setLevel(logging.DEBUG)
 # Globals
 TYPE_KEY = "Type"
 RESULT_KEY = "Result"
-BITDIVIDER = 1048567
-SPEEDTYPE = " Mbit/Sekunde"
+BIT_DIVIDER = 1048567
+SPEED_TYPE = " Mbit/Sekunde"
 
 CONFIG = config.load_config()
 TWITTER_API = TwitterAPI(
@@ -56,8 +56,8 @@ def my_type_is(type):
             response = persistence.fetch_last(type)
             print response
             if type == "download" or type == "upload":
-                session.attributes[RESULT_KEY] = int(response[0] / BITDIVIDER)
-                result = str(session.attributes[RESULT_KEY]) + SPEEDTYPE
+                session.attributes[RESULT_KEY] = int(response[0] / BIT_DIVIDER)
+                result = str(session.attributes[RESULT_KEY]) + SPEED_TYPE
             else:
                 session.attributes[RESULT_KEY] = int(response[0])
                 result = str(session.attributes[RESULT_KEY])
@@ -154,25 +154,25 @@ def get_stats(type):
             response = persistence.fetch_stats(type)
             print response
             if type == "download" or type == "upload":
-                speedMax = str(int(response[0] / BITDIVIDER)) + SPEEDTYPE
-                speedMin = str(int(response[1] / BITDIVIDER)) + SPEEDTYPE
-                speedAvg = str(int(response[2] / BITDIVIDER)) + SPEEDTYPE
-                speedCount = response[3]
+                speed_max = str(int(response[0] / BIT_DIVIDER)) + SPEED_TYPE
+                speed_min = str(int(response[1] / BIT_DIVIDER)) + SPEED_TYPE
+                speed_avg = str(int(response[2] / BIT_DIVIDER)) + SPEED_TYPE
+                speed_count = response[3]
             else:
-                speedMax = response[0]
-                speedMin = response[1]
-                speedAvg = response[2]
-                speedCount = response[3]
+                speed_max = response[0]
+                speed_min = response[1]
+                speed_avg = response[2]
+                speed_count = response[3]
 
             # Choose the template
             template = 'stats_text' if (type == 'download' or type == 'upload')\
                 else 'stats_text_ping'
             speed_text = render_template(
                 template,
-                max=speedMax,
-                min=speedMin,
-                avg=speedAvg,
-                count=speedCount,
+                max=speed_max,
+                min=speed_min,
+                avg=speed_avg,
+                count=speed_count,
                 type=type
             ).encode('utf8')
 
