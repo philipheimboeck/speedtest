@@ -19,11 +19,11 @@ APP = Flask(__name__)
 ask = Ask(APP, "/")
 logging.getLogger('flask_ask').setLevel(logging.DEBUG)
 
-## Globals
+# Globals
 TYPE_KEY = "Type"
 RESULT_KEY = "Result"
-bitDivider = 1048567
-speedType = " Mbit/Sekunde"
+BITDIVIDER = 1048567
+SPEEDTYPE = " Mbit/Sekunde"
 
 CONFIG = config.load_config()
 TWITTER_API = TwitterAPI(
@@ -43,6 +43,7 @@ def launch():
     reprompt_text = render_template('welcome_reprompt').encode('utf8')
     return question(question_text).reprompt(reprompt_text).simple_card(card_title, question_text)
 
+
 @ask.intent('CurrentSpeedIntent', mapping={'type': 'Type'})
 def my_type_is(type):
     """
@@ -55,8 +56,8 @@ def my_type_is(type):
             response = persistence.fetch_last(type)
             print response
             if type == "download" or type == "upload":
-                session.attributes[RESULT_KEY] = int(response[0] / bitDivider)
-                result = str(session.attributes[RESULT_KEY]) + speedType
+                session.attributes[RESULT_KEY] = int(response[0] / BITDIVIDER)
+                result = str(session.attributes[RESULT_KEY]) + SPEEDTYPE
             else:
                 session.attributes[RESULT_KEY] = int(response[0])
                 result = str(session.attributes[RESULT_KEY])
@@ -86,6 +87,7 @@ def my_type_is(type):
         reprompt_text = render_template('unknown_type_reprompt').encode('utf8')
         return question(question_text).reprompt(reprompt_text)\
             .simple_card(card_title, question_text)
+
 
 @ask.intent('TweetCurrentSpeed', mapping={'answer': 'Answer'})
 def tweetCurrentSpeed(answer):
@@ -128,6 +130,7 @@ def tweetCurrentSpeed(answer):
         return question(statement_text).reprompt(reprompt_text)\
             .simple_card(card_title, statement_text)
 
+
 @ask.intent('MeasureSpeedIntent')
 def start_measurement():
     """
@@ -136,6 +139,7 @@ def start_measurement():
     measure.start_speedtest(config=CONFIG)
     statement_text = render_template('measure').encode('utf8')
     return statement(statement_text)
+
 
 @ask.intent('StatsOfToday', mapping={'type': 'Type'})
 def get_stats(type):
@@ -150,9 +154,9 @@ def get_stats(type):
             response = persistence.fetch_stats(type)
             print response
             if type == "download" or type == "upload":
-                speedMax = str(int(response[0] / bitDivider)) + speedType
-                speedMin = str(int(response[1] / bitDivider)) + speedType
-                speedAvg = str(int(response[2] / bitDivider)) + speedType
+                speedMax = str(int(response[0] / BITDIVIDER)) + SPEEDTYPE
+                speedMin = str(int(response[1] / BITDIVIDER)) + SPEEDTYPE
+                speedAvg = str(int(response[2] / BITDIVIDER)) + SPEEDTYPE
                 speedCount = response[3]
             else:
                 speedMax = response[0]
@@ -161,8 +165,10 @@ def get_stats(type):
                 speedCount = response[3]
 
             # Choose the template
+            template = 'stats_text' if (type == 'download' or type == 'upload')\
+                else 'stats_text_ping'
             speed_text = render_template(
-                'stats_text',
+                template,
                 max=speedMax,
                 min=speedMin,
                 avg=speedAvg,
@@ -187,12 +193,14 @@ def stop():
     statement_text = render_template('stop').encode('utf8')
     return statement(statement_text)
 
+
 @ask.session_ended
 def session_ended():
     """
     Will be called when session is ended
     """
     return "", 200
+
 
 if __name__ == '__main__':
     APP.run(debug=True)

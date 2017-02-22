@@ -43,3 +43,6 @@ measure: |
 
 stats_text:  |
   Ich habe mir deine {{ type }} Resultate von heute angesehen. Mir liegen {{ count }} Resultate vor. Dein maximal Wert liegt bei {{ max }} und dein Minimum bei {{ min }}. Deine durchschnittliche Geschwindigkeit liegt heute bei {{ avg }}.
+
+stats_text_ping:  |
+  Ich habe mir deine {{ type }} Resultate von heute angesehen. Mir liegen {{ count }} Resultate vor. Dein maximal Wert liegt bei {{ max }} und dein Minimum bei {{ min }}. Dein durchschnittlicher {{ type }} liegt heute bei {{ avg }}.
