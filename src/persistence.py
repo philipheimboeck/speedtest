@@ -3,6 +3,7 @@ Persistence for fetching and saving speedtests
 """
 
 import sqlite3
+import os
 from datetime import datetime, timedelta
 
 class LogPersistence(object):
@@ -13,20 +14,26 @@ class LogPersistence(object):
         Constructor
         :param database the database to read/write from/to
         """
-        self.database = database
+        # Expand path to allow ~ character
+        self.database = os.path.expanduser(database)
         self.conn = None
 
     def __enter__(self):
+        """Establish a connection and create the table if not existing"""
+        self.connect()
+        self.create()
+        return self
+
+    def connect(self):
         """Establish a connection"""
         self.conn = sqlite3.connect(self.database, detect_types=sqlite3.PARSE_DECLTYPES)
-        self.__create()
         return self
 
     def __exit__(self, exc_type, exc_value, traceback):
         """Close the connection"""
         self.conn.close()
 
-    def __create(self):
+    def create(self):
         """
         Create the table if not already existing
         """

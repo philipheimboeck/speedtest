@@ -118,7 +118,7 @@ Once you have setup your [Twitter App][twitterApp] you should udpate the `twitte
 
 ### How to setup the path to the `*.db` on a Raspberry Pi?
 
-If you run into a problem like `sqlite3.OperationalError: unable to open database file` you should make sure, that your `config.json` does not include `~` at the beginning of the `database` path. Example: `/home/pi/speedtest/src/example.db` will work, but `~/home/pi/speedtest/src/example.db` not.
+Keep in mind that the cronjob has a different working directory and therefore its best to use absolute paths in your `config.json` file for the database.
 
 ## Contributors
 
