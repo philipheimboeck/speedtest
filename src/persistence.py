@@ -56,6 +56,16 @@ class LogPersistence(object):
         cursor.execute(sql)
         return cursor.fetchone()
 
+    def fetch_stats(self, type, daterange=(datetime.now().replace(hour=0, minute=0, second=0, microsecond=0), datetime.now())):
+        """
+        Fetches the Max, Min, Avg and Count of the given type in a specified period
+        :param daterange default period is today (00:00 am until now)
+        """
+        cursor = self.conn.cursor()
+        sql = 'Select max({0}), min({0}), avg({0}), count({0}) from speedlogs WHERE measure_dt BETWEEN "{1}" AND "{2}"'.format(type, daterange[0], daterange[1])
+        cursor.execute(sql)
+        return cursor.fetchone()
+
 
     def save(self, values):
         """

@@ -3,16 +3,23 @@ CurrentSpeedIntent wie schnell ist meine {Type} geschwindigkeit
 CurrentSpeedIntent wie viel {Type} habe ich
 CurrentSpeedIntent sag mir meine {Type} geschwindigkeit
 
-TweetCurrentSpeed {answer} bitte twitter das
-TweetCurrentSpeed {answer} bitte schicke einen tweet raus
+TweetCurrentSpeed {Answer} bitte twitter das
+TweetCurrentSpeed {Answer} bitte schicke einen tweet raus
 
-MeasureSpeedIntent messe den download
-MeasureSpeedIntent messe die download geschwindigkeit
+MeasureSpeedIntent messe den {Type}
+MeasureSpeedIntent messe die {Type} geschwindigkeit
 MeasureSpeedIntent messe das internet
 MeasureSpeedIntent messe die internet geschwindigkeit
-MeasureSpeedIntent messe den upload
-MeasureSpeedIntent messe die upload geschwindigkeit
+MeasureSpeedIntent messe den {Type}
+MeasureSpeedIntent messe die {Type} geschwindigkeit
 MeasureSpeedIntent nimm eine messung vor
 MeasureSpeedIntent starte eine Messung
 MeasureSpeedIntent starte eine neue Messung
 MeasureSpeedIntent starte eine weitere Messung
+
+StatsOfToday was kannst du mir zur heutigen {Type} geschwindigkeit sagen
+StatsOfToday was kannst du mir zum heutigen {Type} sagen
+StatsOfToday wie gut ist mein {Type} heute
+StatsOfToday wie gut ist mein internet heute
+StatsOfToday was kannst du mir zum heutigen internet sagen
+StatsOfToday was kannst du mir zur heutigen internet geschwindigkeit sagen

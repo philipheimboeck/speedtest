@@ -19,9 +19,11 @@ APP = Flask(__name__)
 ask = Ask(APP, "/")
 logging.getLogger('flask_ask').setLevel(logging.DEBUG)
 
-## Globals
+# Globals
 TYPE_KEY = "Type"
 RESULT_KEY = "Result"
+BIT_DIVIDER = 1048567
+SPEED_TYPE = " Mbit/Sekunde"
 
 CONFIG = config.load_config()
 TWITTER_API = TwitterAPI(
@@ -41,6 +43,7 @@ def launch():
     reprompt_text = render_template('welcome_reprompt').encode('utf8')
     return question(question_text).reprompt(reprompt_text).simple_card(card_title, question_text)
 
+
 @ask.intent('CurrentSpeedIntent', mapping={'type': 'Type'})
 def my_type_is(type):
     """
@@ -53,8 +56,8 @@ def my_type_is(type):
             response = persistence.fetch_last(type)
             print response
             if type == "download" or type == "upload":
-                session.attributes[RESULT_KEY] = int(response[0] / 1048567)
-                result = str(session.attributes[RESULT_KEY]) + " Mbit/Sekunde"
+                session.attributes[RESULT_KEY] = int(response[0] / BIT_DIVIDER)
+                result = str(session.attributes[RESULT_KEY]) + SPEED_TYPE
             else:
                 session.attributes[RESULT_KEY] = int(response[0])
                 result = str(session.attributes[RESULT_KEY])
@@ -84,6 +87,7 @@ def my_type_is(type):
         reprompt_text = render_template('unknown_type_reprompt').encode('utf8')
         return question(question_text).reprompt(reprompt_text)\
             .simple_card(card_title, question_text)
+
 
 @ask.intent('TweetCurrentSpeed', mapping={'answer': 'Answer'})
 def tweetCurrentSpeed(answer):
@@ -126,6 +130,7 @@ def tweetCurrentSpeed(answer):
         return question(statement_text).reprompt(reprompt_text)\
             .simple_card(card_title, statement_text)
 
+
 @ask.intent('MeasureSpeedIntent')
 def start_measurement():
     """
@@ -135,6 +140,51 @@ def start_measurement():
     statement_text = render_template('measure').encode('utf8')
     return statement(statement_text)
 
+
+@ask.intent('StatsOfToday', mapping={'type': 'Type'})
+def get_stats(type):
+    """
+    Get the Max, Min, Avg and Count of the given type of todays results
+    """
+    card_title = render_template('card_title')
+    if type is not None:
+        session.attributes[TYPE_KEY] = type
+        print type
+        with LogPersistence(CONFIG['database']) as persistence:
+            response = persistence.fetch_stats(type)
+            print response
+            if type == "download" or type == "upload":
+                speed_max = str(int(response[0] / BIT_DIVIDER)) + SPEED_TYPE
+                speed_min = str(int(response[1] / BIT_DIVIDER)) + SPEED_TYPE
+                speed_avg = str(int(response[2] / BIT_DIVIDER)) + SPEED_TYPE
+                speed_count = response[3]
+            else:
+                speed_max = response[0]
+                speed_min = response[1]
+                speed_avg = response[2]
+                speed_count = response[3]
+
+            # Choose the template
+            template = 'stats_text' if (type == 'download' or type == 'upload')\
+                else 'stats_text_ping'
+            speed_text = render_template(
+                template,
+                max=speed_max,
+                min=speed_min,
+                avg=speed_avg,
+                count=speed_count,
+                type=type
+            ).encode('utf8')
+
+            return statement('<speak>{}</speak>'.format(speed_text)) \
+                .simple_card(card_title, speed_text)
+    else:
+        question_text = render_template('unknown_type').encode('utf8')
+        reprompt_text = render_template('unknown_type_reprompt').encode('utf8')
+        return question(question_text).reprompt(reprompt_text)\
+            .simple_card(card_title, question_text)
+
+
 @ask.intent('AMAZON.StopIntent')
 def stop():
     """
@@ -143,12 +193,14 @@ def stop():
     statement_text = render_template('stop').encode('utf8')
     return statement(statement_text)
 
+
 @ask.session_ended
 def session_ended():
     """
     Will be called when session is ended
     """
     return "", 200
+
 
 if __name__ == '__main__':
     APP.run(debug=True)
