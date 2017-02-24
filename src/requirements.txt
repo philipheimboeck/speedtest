@@ -3,3 +3,4 @@ matplotlib==2.0
 flask-ask==0.8.7
 requests==2.13.0
 TwitterAPI==2.4.4
+enum34==1.1.6

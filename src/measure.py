@@ -36,5 +36,5 @@ def start_speedtest():
     """
     Do a speedtest in the background
     """
-    thread.start_new_thread(run_speedtest)
+    thread.start_new_thread(run_speedtest, ())
     

@@ -5,7 +5,6 @@ Test the persistence module
 import unittest
 import os
 from unittest_data_provider import data_provider
-import fixtures
 import context
 from persistence import LogPersistence
 

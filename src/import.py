@@ -12,7 +12,6 @@ from app import App, persistence
 kernel = App()
 kernel.boot()
 
-
 FILENAME = sys.argv[1]
 DATA = np.genfromtxt(
     FILENAME,
