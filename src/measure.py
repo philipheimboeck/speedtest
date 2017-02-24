@@ -4,6 +4,8 @@ from datetime import datetime
 import thread
 from persistence import LogPersistence
 
+CONFIG = None
+
 def test_speed():
     """
     Do a speedtest
@@ -16,11 +18,11 @@ def test_speed():
         'measure_dt': datetime.now()
         }
 
-def run_speedtest(config):
+def run_speedtest():
     """
     Execute the speedtest, save the result and return the result
     """
-    with LogPersistence(config['database']) as database:
+    with LogPersistence(CONFIG['database']) as database:
 
         # Speedtest
         print "Starting measurement..."
@@ -30,9 +32,9 @@ def run_speedtest(config):
         print speed
     return speed
 
-def start_speedtest(config):
+def start_speedtest():
     """
     Do a speedtest in the background
     """
-    thread.start_new_thread(run_speedtest, (config,))
+    thread.start_new_thread(run_speedtest, ())
     

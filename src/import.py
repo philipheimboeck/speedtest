@@ -7,9 +7,10 @@ Import speedtest data from csv
 from datetime import datetime
 import sys
 import numpy as np
-from persistence import LogPersistence
-import config
+from app import App, persistence
 
+kernel = App()
+kernel.boot()
 
 FILENAME = sys.argv[1]
 DATA = np.genfromtxt(
@@ -21,9 +22,7 @@ DATA = np.genfromtxt(
     dtype="S10,S5,S5,f8,f8,f8"
     )
 
-CONFIG = config.load_config()
-
-with LogPersistence(CONFIG['database']) as persistence:
+with persistence.LogPersistence(kernel.config['database']) as persistence:
     for i in range(len(DATA['time'])):
         instance = {
             'measure_dt':

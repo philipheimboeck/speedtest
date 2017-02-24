@@ -5,13 +5,12 @@ Executable that does a speedtest and saves it to the database
 """
 
 import sys
-import config
-import measure
+from app import App, measure
 
 if len(sys.argv) > 1:
-    CONFIG = config.load_config(sys.argv[1])
+    kernel = App(sys.argv[1])
 else:
-    CONFIG = config.load_config()
+    kernel = App()
 
-SPEED = measure.run_speedtest(CONFIG)
-print SPEED
+kernel.boot()
+measure.run_speedtest()

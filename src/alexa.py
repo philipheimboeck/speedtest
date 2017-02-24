@@ -7,13 +7,15 @@ Executable that handles the Alexa requests
 
 import logging
 
+from enum import Enum
 from flask import Flask, render_template
 from flask_ask import Ask, question, session, statement
 from TwitterAPI import TwitterAPI
 
-import config
-from persistence import LogPersistence
-import measure
+from app import App, persistence, measure
+
+kernel = App()
+kernel.boot()
 
 APP = Flask(__name__)
 ask = Ask(APP, "/")
@@ -25,7 +27,16 @@ RESULT_KEY = "Result"
 BIT_DIVIDER = 1048567
 SPEED_TYPE = " Mbit/Sekunde"
 
-CONFIG = config.load_config()
+class SpeedTypes(Enum):
+    """
+    Enumeration of speed types
+    """
+    download = "download"
+    upload = "upload"
+    ping = "ping"
+    internet = "download"
+
+CONFIG = kernel.config
 TWITTER_API = TwitterAPI(
     CONFIG['twitter_consumer_key'],
     CONFIG['twitter_consumer_secret'],
@@ -44,18 +55,23 @@ def launch():
     return question(question_text).reprompt(reprompt_text).simple_card(card_title, question_text)
 
 
-@ask.intent('CurrentSpeedIntent', mapping={'type': 'Type'})
-def my_type_is(type):
+@ask.intent('CurrentSpeedIntent', mapping={'speed_type': 'Type'})
+def my_type_is(speed_type):
     """
     Get the last speedtest result
     """
+
     card_title = render_template('card_title')
-    if type is not None:
-        session.attributes[TYPE_KEY] = type
-        with LogPersistence(CONFIG['database']) as persistence:
-            response = persistence.fetch_last(type)
+    if speed_type is not None:
+        # Get the enumeration
+        speed_type = SpeedTypes[speed_type]
+        session.attributes[TYPE_KEY] = speed_type.value
+
+        with persistence.LogPersistence(CONFIG['database']) as database:
+            response = database.fetch_last(speed_type.value)
             print response
-            if type == "download" or type == "upload":
+
+            if speed_type == SpeedTypes.download or speed_type == SpeedTypes.upload:
                 session.attributes[RESULT_KEY] = int(response[0] / BIT_DIVIDER)
                 result = str(session.attributes[RESULT_KEY]) + SPEED_TYPE
             else:
@@ -69,14 +85,15 @@ def my_type_is(type):
             speed_text = render_template(
                 template,
                 currentSpeed=result,
-                type=type,
+                type=speed_type.value,
                 measure_date=response[1].strftime('%Y%m%d'),
                 measure_time=response[1].strftime('%H:%M')
             ).encode('utf8')
 
             if twitter_enabled:
                 # If twitter is enabled, we ask a question instead of stating something
-                speed_reprompt = render_template('known_type_repromt', type=type).encode('utf8')
+                speed_reprompt = render_template('known_type_repromt', type=speed_type.value)\
+                    .encode('utf8')
                 return question('<speak>{}</speak>'.format(speed_text)) \
                     .reprompt(speed_reprompt).simple_card(card_title, speed_text)
 
@@ -90,12 +107,13 @@ def my_type_is(type):
 
 
 @ask.intent('TweetCurrentSpeed', mapping={'answer': 'Answer'})
-def tweetCurrentSpeed(answer):
+def tweet_current_speed(answer):
     """
     Use twitterAPI to send out the last result
     """
     card_title = render_template('card_title')
-    type = session.attributes.get(TYPE_KEY)
+    speed_type = session.attributes.get(TYPE_KEY)
+    speed_type = SpeedTypes[speed_type]
     result = session.attributes.get(RESULT_KEY)
 
     if answer == "ja" and result > 0:
@@ -103,8 +121,8 @@ def tweetCurrentSpeed(answer):
             'download': str(result) + " Mbit/Sekunde",
             'upload': str(result) + " Mbit/Sekunde",
             'ping': str(result),
-        }[type]
-        tweet_text = render_template('tweet_text', currentSpeed=result_text, type=type)\
+        }[speed_type.value]
+        tweet_text = render_template('tweet_text', currentSpeed=result_text, type=speed_type.value)\
             .encode('utf8')
         response = TWITTER_API.request('statuses/update', {'status':tweet_text})
         if response.status_code == 200:
@@ -136,24 +154,26 @@ def start_measurement():
     """
     Start a measurement
     """
-    measure.start_speedtest(config=CONFIG)
+    measure.start_speedtest()
     statement_text = render_template('measure').encode('utf8')
     return statement(statement_text)
 
 
-@ask.intent('StatsOfToday', mapping={'type': 'Type'})
-def get_stats(type):
+@ask.intent('StatsOfToday', mapping={'speed_type': 'Type'})
+def get_stats(speed_type):
     """
     Get the Max, Min, Avg and Count of the given type of todays results
     """
+
     card_title = render_template('card_title')
-    if type is not None:
-        session.attributes[TYPE_KEY] = type
-        print type
-        with LogPersistence(CONFIG['database']) as persistence:
-            response = persistence.fetch_stats(type)
+    if speed_type is not None:
+        speed_type = SpeedTypes[speed_type]
+        session.attributes[TYPE_KEY] = speed_type.value
+
+        with persistence.LogPersistence(CONFIG['database']) as database:
+            response = database.fetch_stats(speed_type.value)
             print response
-            if type == "download" or type == "upload":
+            if speed_type == SpeedTypes.download or speed_type == SpeedTypes.upload:
                 speed_max = str(int(response[0] / BIT_DIVIDER)) + SPEED_TYPE
                 speed_min = str(int(response[1] / BIT_DIVIDER)) + SPEED_TYPE
                 speed_avg = str(int(response[2] / BIT_DIVIDER)) + SPEED_TYPE
@@ -165,7 +185,8 @@ def get_stats(type):
                 speed_count = response[3]
 
             # Choose the template
-            template = 'stats_text' if (type == 'download' or type == 'upload')\
+            template = 'stats_text' if (speed_type == SpeedTypes.download \
+                or speed_type == SpeedTypes.upload) \
                 else 'stats_text_ping'
             speed_text = render_template(
                 template,
@@ -173,7 +194,7 @@ def get_stats(type):
                 min=speed_min,
                 avg=speed_avg,
                 count=speed_count,
-                type=type
+                type=speed_type.value
             ).encode('utf8')
 
             return statement('<speak>{}</speak>'.format(speed_text)) \

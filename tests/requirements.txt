@@ -1,0 +1,2 @@
+unittest-data-provider==1.0.1
+fixtures==3.0.0
