@@ -11,12 +11,12 @@ import matplotlib
 matplotlib.use('Agg')
 
 import matplotlib.pyplot as plt
-from persistence import LogPersistence
-import config
+from app import App, persistence
 
-CONFIG = config.load_config()
+kernel = App()
+kernel.boot()
 
-with LogPersistence(CONFIG['database']) as persistence:
+with persistence.LogPersistence(kernel.config['database']) as persistence:
     # Fetch the data
     START = datetime.now() - timedelta(60)
     DATA = persistence.fetch((START, datetime.now()))

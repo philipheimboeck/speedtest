@@ -11,9 +11,10 @@ from flask import Flask, render_template
 from flask_ask import Ask, question, session, statement
 from TwitterAPI import TwitterAPI
 
-import config
-from persistence import LogPersistence
-import measure
+from app import App, persistence, measure
+
+kernel = App()
+kernel.boot()
 
 APP = Flask(__name__)
 ask = Ask(APP, "/")
@@ -25,7 +26,7 @@ RESULT_KEY = "Result"
 BIT_DIVIDER = 1048567
 SPEED_TYPE = " Mbit/Sekunde"
 
-CONFIG = config.load_config()
+CONFIG = kernel.config
 TWITTER_API = TwitterAPI(
     CONFIG['twitter_consumer_key'],
     CONFIG['twitter_consumer_secret'],
@@ -52,7 +53,7 @@ def my_type_is(type):
     card_title = render_template('card_title')
     if type is not None:
         session.attributes[TYPE_KEY] = type
-        with LogPersistence(CONFIG['database']) as persistence:
+        with persistence.LogPersistence(CONFIG['database']) as persistence:
             response = persistence.fetch_last(type)
             print response
             if type == "download" or type == "upload":
@@ -90,7 +91,7 @@ def my_type_is(type):
 
 
 @ask.intent('TweetCurrentSpeed', mapping={'answer': 'Answer'})
-def tweetCurrentSpeed(answer):
+def tweet_current_speed(answer):
     """
     Use twitterAPI to send out the last result
     """
@@ -136,7 +137,7 @@ def start_measurement():
     """
     Start a measurement
     """
-    measure.start_speedtest(config=CONFIG)
+    measure.start_speedtest()
     statement_text = render_template('measure').encode('utf8')
     return statement(statement_text)
 
